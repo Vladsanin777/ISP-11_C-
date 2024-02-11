@@ -2,10 +2,11 @@
 #include <random>
 #include <string>
 #include <thread>
-
+#include <dpp/dpp.h>
 
 using namespace std;
 
+bool i = true;
 
 
 
@@ -45,7 +46,7 @@ public:
   }
 };
 
-int setup(void) {
+int setup() {
   string user_command;
   cout << "Введите существующую команду: ";
   getline(cin, user_command);
@@ -90,25 +91,38 @@ int setup(void) {
       break;
     }
     case 2: {
-      discordThread.detach()
+      i = false;
     }
     default:{
       cout << "Такой команды не существует!" << endl;
     }
   }
-  setup();
   return 0;
 }
+
+
+void startDiscordBot(const std::string& token) {
+  dpp::cluster client(token);
+
+  client.start();
+}
+
+
+
+
 // key Discord 237
 // Token Discord ���������������ܣ���������ê���ڥ×������������ԉ���߻�������܀���������
 
 
 
+
 int main() {
-  Crypt crypt
-  std::thread discordThread(startDiscordBot, crypt.decrypt(("���������������ܣ���������ê���ڥ×������������ԉ���߻�������܀���������"), 237));
+  Crypt crypt;
+  auto discordThread = std::thread(startDiscordBot, crypt.decrypt(("���������������ܣ���������ê���ڥ×������������ԉ���߻�������܀���������"), 237));
 
   discordThread.join();
-  setup();
-  return 0;
+  while (i) {
+    setup();
+  }
+  discordThread.detach();
 }
