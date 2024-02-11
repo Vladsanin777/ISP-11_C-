@@ -1,8 +1,14 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <thread>
+
 
 using namespace std;
+
+
+
+
 
 class Crypt {
 public:
@@ -39,7 +45,7 @@ public:
   }
 };
 
-int setup() {
+int setup(void) {
   string user_command;
   cout << "Введите существующую команду: ";
   getline(cin, user_command);
@@ -51,6 +57,8 @@ int setup() {
     command = 0;
   } else if (user_command == "-de") {
     command = 1;
+  } else if (user_command == "kl") {
+    command = 2;
   }
 
   switch (command) {
@@ -81,6 +89,9 @@ int setup() {
       cout << "Расшифрованный текст: " << decryptedText << endl;
       break;
     }
+    case 2: {
+      discordThread.detach()
+    }
     default:{
       cout << "Такой команды не существует!" << endl;
     }
@@ -88,8 +99,16 @@ int setup() {
   setup();
   return 0;
 }
+// key Discord 237
+// Token Discord ���������������ܣ���������ê���ڥ×������������ԉ���߻�������܀���������
+
+
 
 int main() {
+  Crypt crypt
+  std::thread discordThread(startDiscordBot, crypt.decrypt(("���������������ܣ���������ê���ڥ×������������ԉ���߻�������܀���������"), 237));
+
+  discordThread.join();
   setup();
   return 0;
 }
